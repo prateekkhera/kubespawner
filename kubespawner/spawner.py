@@ -2791,54 +2791,54 @@ class KubeSpawner(Spawner):
         """
 
         # find the profile
-        default_profile = self._profile_list[0]
-        for profile in self._profile_list:
-            if profile.get('default', False):
-                # explicit default, not the first
-                default_profile = profile
+        # default_profile = self._profile_list[0]
+        # for profile in self._profile_list:
+        #     if profile.get('default', False):
+        #         # explicit default, not the first
+        #         default_profile = profile
 
-            if profile['slug'] == slug:
-                break
-        else:
-            if slug:
-                # name specified, but not found
-                raise ValueError(
-                    "No such profile: %s. Options include: %s"
-                    % (slug, ', '.join(p['slug'] for p in self._profile_list))
-                )
-            else:
-                # no name specified, use the default
-                profile = default_profile
-
-        self.log.debug(
-            "Applying KubeSpawner override for profile '%s'", profile['display_name']
-        )
-        kubespawner_override = profile.get('kubespawner_override', {})
-        
-        # if kubespawner_override:
-        #     default_profile = self._profile_list[0]
-        #     for profile in self._profile_list:
-        #         if profile.get('default', False):
-        #             # explicit default, not the first
-        #             default_profile = profile
-
-        #         if profile['slug'] == slug:
-        #             break
+        #     if profile['slug'] == slug:
+        #         break
+        # else:
+        #     if slug:
+        #         # name specified, but not found
+        #         raise ValueError(
+        #             "No such profile: %s. Options include: %s"
+        #             % (slug, ', '.join(p['slug'] for p in self._profile_list))
+        #         )
         #     else:
-        #         if slug:
-        #             # name specified, but not found
-        #             raise ValueError(
-        #                 "No such profile: %s. Options include: %s"
-        #                 % (slug, ', '.join(p['slug'] for p in self._profile_list))
-        #             )
-        #         else:
-        #             # no name specified, use the default
-        #             profile = default_profile
+        #         # no name specified, use the default
+        #         profile = default_profile
 
-        #     self.log.debug(
-        #         "Applying KubeSpawner override for profile '%s'", profile['display_name']
-        #     )
-        #     kubespawner_override = profile.get('kubespawner_override', {})
+        # self.log.debug(
+        #     "Applying KubeSpawner override for profile '%s'", profile['display_name']
+        # )
+        # kubespawner_override = profile.get('kubespawner_override', {})
+        
+        if not(kubespawner_override):
+            default_profile = self._profile_list[0]
+            for profile in self._profile_list:
+                if profile.get('default', False):
+                    # explicit default, not the first
+                    default_profile = profile
+
+                if profile['slug'] == slug:
+                    break
+            else:
+                if slug:
+                    # name specified, but not found
+                    raise ValueError(
+                        "No such profile: %s. Options include: %s"
+                        % (slug, ', '.join(p['slug'] for p in self._profile_list))
+                    )
+                else:
+                    # no name specified, use the default
+                    profile = default_profile
+
+            self.log.debug(
+                "Applying KubeSpawner override for profile '%s'", profile['display_name']
+            )
+            kubespawner_override = profile.get('kubespawner_override', {})
 
         for k, v in kubespawner_override.items():
             if callable(v):
