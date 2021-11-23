@@ -2815,7 +2815,7 @@ class KubeSpawner(Spawner):
         # )
         # kubespawner_override = profile.get('kubespawner_override', {})
         
-        if kubespawner_override.items():
+        if kubespawner_override:
             default_profile = self._profile_list[0]
             for profile in self._profile_list:
                 if profile.get('default', False):
