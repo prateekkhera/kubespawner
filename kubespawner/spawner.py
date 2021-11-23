@@ -2839,6 +2839,16 @@ class KubeSpawner(Spawner):
                 "Applying KubeSpawner override for profile '%s'", profile['display_name']
             )
             kubespawner_override = profile.get('kubespawner_override', {})
+            for k, v in kubespawner_override.items():
+                if callable(v):
+                    v = v(self)
+                    self.log.debug(
+                        ".. overriding KubeSpawner value %s=%s (callable result)", k, v
+                    )
+                else:
+                    self.log.debug(".. overriding KubeSpawner value %s=%s", k, v)
+                setattr(self, k, v)
+        kubespawner_override = profile.get('kubespawner_override', {})
         for k, v in kubespawner_override.items():
             if callable(v):
                 v = v(self)
